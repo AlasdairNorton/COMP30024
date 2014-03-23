@@ -6,6 +6,15 @@ public class Controller {
 		board = new Board(Integer.parseInt(args[0]));
 		readInput(args);
 		board.printBoard();
+		
+		board.getNodes()[0][0].getAdjacents(board);
+		board.getNodes()[0][4].getAdjacents(board);
+		board.getNodes()[2][3].getAdjacents(board);
+		board.getNodes()[4][0].getAdjacents(board);
+		board.getNodes()[4][8].getAdjacents(board);
+		board.getNodes()[8][0].getAdjacents(board);
+		board.getNodes()[8][4].getAdjacents(board);
+		board.getNodes()[7][2].getAdjacents(board);
 	}
 	
 	public static void readInput(String[] args){

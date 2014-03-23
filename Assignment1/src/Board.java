@@ -3,7 +3,8 @@
 public class Board {
 	/* The length of the board's sides */
 	private int size;
-	/* Array containing all the positions on the board */
+	/* Array containing all the positions on the board
+	 * First dimension is y (rows), second is x (position in row) */
 	private Position[][] nodes;
 	
 	public Board (int size){
