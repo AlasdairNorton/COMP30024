@@ -8,12 +8,22 @@ public class Position {
 	private int y;
 	/* The colour of the piece on the tile ('B', 'W' or '-') */
 	private char colour;
+	/* The cluster this node belongs to (null by default) */
+	private Cluster parentCluster;
 	
-	public Position(int x, int y, char colour) {
+	public Position(int y, int x, char colour) {
 		super();
 		this.x = x;
 		this.y = y;
 		this.colour = colour;
+		this.parentCluster = null;
+	}
+	
+	public Cluster getParentCluster() {
+		return parentCluster;
+	}
+	public void setParentCluster(Cluster parentCluster) {
+		this.parentCluster = parentCluster;
 	}
 	public int getX() {
 		return x;
@@ -113,10 +123,10 @@ public class Position {
 			adjacents.add(board.getNodes()[y-1][x]);
 			adjacents.add(board.getNodes()[y-1][x+1]);
 		}
-		printAdjacents(adjacents);
-		return null;
+		return adjacents;
 	}
 	
+	/* Testing purposes. Prints a list of adjacent nodes */
 	public void printAdjacents(ArrayList<Position> nodes){
 		System.out.print("For node ("+this.y+","+this.x+"):");
 		for(Position node:nodes){
