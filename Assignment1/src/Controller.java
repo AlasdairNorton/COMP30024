@@ -1,16 +1,20 @@
 import java.util.ArrayList;
-
+// CHECK INPUT WORKS.
+// MANAGE ERRORS.
 
 public class Controller {
 	private static Board board;
 	private static ArrayList<Cluster> clusters;
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		board = new Board(args);
 		clusters = new ArrayList<Cluster>(0);
+		board = new Board();
 		board.printBoard();
 		makeClusters();
 		printClusters();
+		for(Cluster clust: clusters){
+			clust.testWin(board);
+		}
 		/*board.getNodes()[0][0].getAdjacents(board);
 		board.getNodes()[0][4].getAdjacents(board);
 		board.getNodes()[2][3].getAdjacents(board);
