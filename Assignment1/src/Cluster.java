@@ -3,6 +3,7 @@ import java.util.ArrayList;
 /* A group of connected pieces of the same colour. */
 public class Cluster {
 	private ArrayList<Position> nodes;
+
 	/* Colour of the pieces in the cluster. B for black, W for white */
 	private char colour;
 	public char getColour() {
@@ -30,12 +31,10 @@ public class Cluster {
 		this.nodes = nodes;
 	}
 
-	public int testWin(Board board){
-		/* Stub. Returns 0 if cluster does not fulfil a win condition
-		 * 1 if cluster is a loop
-		 * 2 if cluster is tripod
-		 * 3 if cluster is both
-		 */
+	public Boolean testTripod(Board board){
+		/* Returns true if cluster forms a tripod
+		 	Currently prints out the colour of the cluster and
+		 	the number of edges it connects */
 		int size = board.getSize();
 		int[] edges = {0,0,0,0,0,0};
 		int tripodSum = 0;
@@ -58,18 +57,20 @@ public class Cluster {
 				edges[1] = 1;
 			}
 			if(node.getY() > size-1 && node.getY() < 2*size-2 &&
-					node.getX()==2*size-1-Math.abs(size-(node.getY()+1))){
+					node.getX()==2*size-2){
 				/* If node is on lower right edge,
 				   and not a corner, set edges[2] to 1 */
 				edges[2] = 1;
 			}
-			if(node.getY() == 2*size-2 && node.getX()!=0 && node.getX()!=size-1){
+			if(node.getY() == 2*size-2 && node.getX()!=size-1
+					&& node.getX()!=2*size-2){
 				/* If node is on bottom edge, and not a corner, 
 				 * set edges[3] to 1
 				 */
 				edges[3] = 1;
 			}
-			if(node.getY()>size-1 && node.getY()<2*size-2 && node.getX()==0){
+			if(node.getY()>size-1 && node.getY()<2*size-2 &&
+					node.getX()==node.getY()-size){
 				/* If node is on lower left edge, and not a corner, 
 				 * set edges[4] to 1
 				 */
@@ -87,12 +88,7 @@ public class Cluster {
 			tripodSum+=edges[i];
 		}
 		System.out.println(colour+":"+tripodSum);
-		/* Loop test: For each position not in cluster:
-		 * 				Try to find path to edge of board via positions
-		 * 				not of cluster's colour
-		 * If you can, that position is not encircled by the cluster.
-		 * If you can't, it is, and the cluster is a loop
-		 */
-		return 0;
+		
+		return tripodSum>=3;
 	}
 }

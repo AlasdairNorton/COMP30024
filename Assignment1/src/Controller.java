@@ -6,14 +6,13 @@ public class Controller {
 	private static Board board;
 	private static ArrayList<Cluster> clusters;
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		clusters = new ArrayList<Cluster>(0);
-		board = new Board();
+		board = new Board(args);
 		board.printBoard();
 		makeClusters();
 		printClusters();
 		for(Cluster clust: clusters){
-			clust.testWin(board);
+			clust.testTripod(board);
 		}
 		/*board.getNodes()[0][0].getAdjacents(board);
 		board.getNodes()[0][4].getAdjacents(board);
@@ -30,7 +29,8 @@ public class Controller {
 		int i, j;
 		Position node;
 		for(i=0;i<2*board.getSize()-1;i++){
-			for(j=0;j<2*board.getSize()-1-Math.abs(board.getSize()-(i+1));j++){
+			for(j=Math.max(0, i-board.getSize()+1);
+					j< Math.min(board.getSize()+i, 2*board.getSize()-1) ;j++){
 				node = board.getNodes()[i][j];
 				if(node.getParentCluster() == null && node.getColour()!='-'){
 					// Node is not in a cluster and is not empty

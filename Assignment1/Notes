@@ -1,0 +1,10 @@
+1. Input currently comes from the wrong source. Program currently takes
+input directly from the command line as arguments, instead of from System.in.
+This is simply because it is impractical to pipe data to System.in
+using eclipse, and it's way faster using eclipse to test than cmd.
+It's a very straightforward change to make.
+
+2. I've used ArrayLists in several places (storing clusters in Controller,
+storing positions in Cluster, finding adjacents in Position). I'm not sure
+they're the most efficient data structure to use, but again, switching them
+out shouldn't be too hard.
