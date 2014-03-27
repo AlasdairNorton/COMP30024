@@ -8,3 +8,7 @@ It's a very straightforward change to make.
 storing positions in Cluster, finding adjacents in Position). I'm not sure
 they're the most efficient data structure to use, but again, switching them
 out shouldn't be too hard.
+
+3. No error management on input- need to guard against badly formed inputs
+(first character is not a number, does not contain enough positions,
+contains characters other than 'B', 'W' and '-')
