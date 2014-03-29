@@ -1,0 +1,42 @@
+
+1. Input currently comes from the wrong source. Program currently takes
+input directly from the command line as arguments, instead of from System.in.
+This is simply because it is impractical to pipe data to System.in
+using eclipse, and it's way faster using eclipse to test than cmd.
+It's a very straightforward change to make.
+
+2. I've used ArrayLists in several places (storing clusters in Controller,
+storing positions in Cluster, finding adjacents in Position). I'm not sure
+they're the most efficient data structure to use, but again, switching them
+out shouldn't be too hard.
+
+3. No error management on input- need to guard against badly formed inputs
+(first character is not a number, does not contain enough positions,
+contains characters other than 'B', 'W' and '-')
+
+4. Input I'm using:
+5
+B B - - - 
+B - B - - - 
+- B - B - - - 
+- - B B - - - - 
+- - - - - - W - - 
+- W W - - W - - 
+- - W W - - - 
+- - - W - - 
+- - W - -
+
+5. Currently the program: Reads a board state from command line arguments.
+ 	-Constructs a board object corresponding to that state (O(n^2))
+	-Prints out that board (testing it's read in correctly).
+	-Constructs Cluster objects for all continuous groups of same-coloured pieces.
+(O(n^2) - tests every position on the board to see whether it starts a new cluster.
+Forming a cluster once the starting piece is identified is O(k) where k is
+the number of positions in the cluster. Upper limit on k is n^2- majority
+of points on the board are one continuous group.)
+	-Prints a list of the clusters identified (testing it's found them correctly)
+	-For each cluster, tests whether it forms a tripod or not.
+	Prints out the number of edges the cluster connects.
+	O(k)- tests each point in the cluster once. In the worst case it's less
+	efficient than testing each point on the edge of the board, but average case
+	is better.
