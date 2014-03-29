@@ -1,13 +1,11 @@
-package hello;
-
 public class LoopChecker
 {
 
     //Used for checking adjacent spots on grid
     //For example, given grid location (x,y): (x+x_incrementor[0],y+y_incrementor[0]) is the first adjacent node
     //and (x+x_incrementor[5],y+y_incrementor[5]) is the last adjacent node
-    int x_incrementor = {-1,-1,0,1,1,0};
-    int y_incrementor = {-1,0,1,1,0,-1};
+    int x_incrementor[6] = {-1,-1,0,1,1,0};
+    int y_incrementor[6] = {-1,0,1,1,0,-1};
     
   
   /** Given a cluster of nodes, determines if they are a loop
@@ -15,7 +13,7 @@ public class LoopChecker
    * has j nodes and l edges then this method has complexity O( 6k + j + l)
    * @cluster Cluster of colored nodes
    */
-  public boolean isLoop(ArrayList<Pair> cluster, char colour)
+  public boolean isLoop(ArrayList<Pair> cluster)
   {
     
     ArrayList<Pair> adjacentNodes = new ArrayList<Pair>();
