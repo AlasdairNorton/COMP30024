@@ -35,7 +35,7 @@ public class Cluster {
 		/* Returns true if cluster forms a tripod
 		 	Currently prints out the colour of the cluster and
 		 	the number of edges it connects */
-		int size = board.getSize();
+		int size = board.getArraySize();
 		int[] edges = {0,0,0,0,0,0};
 		int tripodSum = 0;
 		
