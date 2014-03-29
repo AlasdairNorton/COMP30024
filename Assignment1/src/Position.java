@@ -6,7 +6,7 @@ public class Position {
 	private int x;
 	/* The tile's y coordinate */
 	private int y;
-	/* The colour of the piece on the tile ('B', 'W' or '-') */
+	/* The colour of the piece on the tile ('B', 'W', '-' or 'O') */
 	private char colour;
 	/* The cluster this node belongs to (null by default) */
 	private Cluster parentCluster;
@@ -56,7 +56,7 @@ public class Position {
 		/* Length of a row is given by
 		 * Math.min(size+y, 2*size-1)
 		 */
-		if(this.x<Math.min(board.getSize()+this.y, 2*board.getSize()-1)){
+		if(this.x<Math.min(board.getArraySize()+this.y, 2*board.getArraySize()-1)){
 			adjacents.add(board.getNodes()[this.y][this.x+1]);
 		}
 		/* Next, find the adjacent positions in the rows above and below
@@ -65,7 +65,7 @@ public class Position {
 		 */
 		if(this.y>0){
 			// Row above exists
-			if(this.x < board.getSize()-1+this.y){
+			if(this.x < board.getArraySize()-1+this.y){
 				// Check tile above and to the right exists
 				adjacents.add(board.getNodes()[this.y-1][this.x]);
 			}
@@ -75,13 +75,13 @@ public class Position {
 			}
 		}
 
-		if(this.y<2*board.getSize()-2){
+		if(this.y<2*board.getArraySize()-2){
 			// Row below exists
-			if(this.x < 2*board.getSize()-2){
+			if(this.x < 2*board.getArraySize()-2){
 				// Check tile below and to the right exists
 				adjacents.add(board.getNodes()[y+1][x+1]);
 			}
-			if(this.x > this.y-board.getSize()+1){
+			if(this.x > this.y-board.getArraySize()+1){
 				// Check tile below and to the left exists
 				adjacents.add(board.getNodes()[y+1][x]);
 			}
