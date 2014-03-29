@@ -14,25 +14,19 @@ public class Controller {
 		for(Cluster clust: clusters){
 			clust.testTripod(board);
 		}
-		/*board.getNodes()[0][0].getAdjacents(board);
-		board.getNodes()[0][4].getAdjacents(board);
-		board.getNodes()[2][3].getAdjacents(board);
-		board.getNodes()[4][0].getAdjacents(board);
-		board.getNodes()[4][8].getAdjacents(board);
-		board.getNodes()[8][0].getAdjacents(board);
-		board.getNodes()[8][4].getAdjacents(board);
-		board.getNodes()[7][2].getAdjacents(board);*/
 	}
 		
+	
 	/* Takes the board state, determines individual groups of pieces */
 	public static void makeClusters(){
 		int i, j;
 		Position node;
-		for(i=0;i<2*board.getSize()-1;i++){
-			for(j=Math.max(0, i-board.getSize()+1);
-					j< Math.min(board.getSize()+i, 2*board.getSize()-1) ;j++){
+		int size = board.getArraySize();
+		for(i=0;i<2*size-1;i++){
+			for(j=Math.max(0, i-size+1);j< Math.min(size+i, 2*size-1);j++){
 				node = board.getNodes()[i][j];
-				if(node.getParentCluster() == null && node.getColour()!='-'){
+				if(node.getParentCluster() == null
+						&& node.getColour()!='-' && node.getColour()!='O'){
 					// Node is not in a cluster and is not empty
 					fillCluster(node);
 				}
