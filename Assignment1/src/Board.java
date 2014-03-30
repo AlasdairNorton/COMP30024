@@ -1,7 +1,6 @@
 import java.util.Scanner;
 
 
-
 public class Board {
 	/* The length of the board's sides */
 	private int size;
