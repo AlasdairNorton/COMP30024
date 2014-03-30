@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class LoopChecker
 {
@@ -56,7 +58,7 @@ public class LoopChecker
    */
   public boolean isOneComponent(ArrayList<Pair> adjacentNodes)
   {
-     Pair currentNode = adjacentNodes[0];
+     Pair currentNode = adjacentNodes.get(0);
      int index = adjacentNodes.indexOf(currentNode);
      adjacentNodes.remove(index);
      Queue<Pair> queue=new LinkedList<Pair>();
@@ -69,7 +71,7 @@ public class LoopChecker
      {
        currentNode = queue.remove();
        
-       for(int i=0; i<x_incrementor.length(); i++)
+       for(int i=0; i<x_incrementor.length; i++)
        {
           int x = currentNode.getFirst() + x_incrementor[i];
           int y = currentNode.getSecond() + y_incrementor[i];
@@ -78,7 +80,7 @@ public class LoopChecker
           if(adjacentNodes.contains(nextNode))
           {
             queue.add(nextNode);
-            int index = adjacentNodes.indexOf(currentNode);
+            index = adjacentNodes.indexOf(currentNode);
             adjacentNodes.remove(index);
           }
        }
