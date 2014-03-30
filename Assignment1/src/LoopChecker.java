@@ -4,45 +4,44 @@ import java.util.Queue;
 
 public class LoopChecker
 {
-
-    //Used for checking adjacent spots on grid
-    //For example, given grid location (x,y): (x+x_incrementor[0],y+y_incrementor[0]) is the first adjacent node
-    //and (x+x_incrementor[5],y+y_incrementor[5]) is the last adjacent node
-    private int x_incrementor[] = {-1,-1,0,1,1,0};
-    private int y_incrementor[] = {-1,0,1,1,0,-1};
+    private Board board;
+    
+    public LoopChecker(Board board)
+    {
+    	this.board = board;
+    }
     
   
   /** Given a cluster of nodes, determines if they are a loop
     * If cluster-size is k, and the graph of nodes adjacent to the cluster
-   * has j nodes and l edges then this method has complexity O( 6k + j + l)
+   * has j nodes and l edges then this method has complexity O( 6k^2 + j + l)
    * @cluster Cluster of colored nodes
    */
-  public boolean isLoop(ArrayList<Pair> cluster)
+  public boolean isLoop(Cluster cluster)
   {
     
-    ArrayList<Pair> adjacentNodes = new ArrayList<Pair>();
+	ArrayList<Position> clusterNodes = cluster.getNodes();
+    ArrayList<Position> adjacentNodes = new ArrayList<Position>();
     
-    for(Pair pair : cluster)
+    //Goes through every node in the cluster, finds adjacent nodes that aren't in the cluster and adds them to a list
+    for(Position position : clusterNodes)
     {
-      //Assume game grid is represented as an arraylist of arraylists of chars
-     for(int i=0; i<x_incrementor.length; i++)
-     {
-       int x = pair.getFirst() + x_incrementor[i];
-       int y = pair.getSecond() + y_incrementor[i];
-       Pair adjacentPair = new Pair(x,y);
-       
-       //If the nodes haven't already been added to the list of adjacent nodes and they're not part of the cluster
-       if( !adjacentNodes.contains(adjacentPair)
-        && !cluster.contains(adjacentPair))
-       {
-         adjacentNodes.add(adjacentPair);
-       }
-       
-     } 
+    	ArrayList<Position> localAdjacentNodes = position.getAdjacents(board);
+    	
+    	//Assumes nodes adjacent to cluster are of a different colour or empty
+    	for(Position node : localAdjacentNodes)
+    	{
+    		//If the nodes haven't already been added to the list of nodes adjacent to the cluster and they're not part of the cluster
+    	       if( !adjacentNodes.contains(node)
+    	        && !clusterNodes.contains(node))
+    	       {
+    	         adjacentNodes.add(node);
+    	       }
+    	}
      
     }
     
-    //If all nodes are one component then the empty nodes inside the loop and outside the loop are connected
+    //If all nodes are one component then the empty nodes inside and outside the 'loop' are connected
     //and thus there is no loop.
     if(isOneComponent(adjacentNodes))
       return false;
@@ -56,12 +55,12 @@ public class LoopChecker
    * This method has complexity O(j+l) where j is the number of nodes and l is the number of 'edges' between
    * them (bfs complexity)
    */
-  public boolean isOneComponent(ArrayList<Pair> adjacentNodes)
+  public boolean isOneComponent(ArrayList<Position> adjacentNodes)
   {
-     Pair currentNode = adjacentNodes.get(0);
+     Position currentNode = adjacentNodes.get(0);
      int index = adjacentNodes.indexOf(currentNode);
      adjacentNodes.remove(index);
-     Queue<Pair> queue=new LinkedList<Pair>();
+     Queue<Position> queue=new LinkedList<Position>();
      queue.add(currentNode);
      
      //Checks all nodes surrounding current node. If any of them are in the list of adjacent nodes, they are added
@@ -70,19 +69,16 @@ public class LoopChecker
      while(!queue.isEmpty())
      {
        currentNode = queue.remove();
+       ArrayList<Position> localAdjacentNodes = currentNode.getAdjacents(board);
        
-       for(int i=0; i<x_incrementor.length; i++)
+       for(Position nextNode : localAdjacentNodes)
        {
-          int x = currentNode.getFirst() + x_incrementor[i];
-          int y = currentNode.getSecond() + y_incrementor[i];
-          Pair nextNode = new Pair(x,y);
-          
-          if(adjacentNodes.contains(nextNode))
-          {
-            queue.add(nextNode);
-            index = adjacentNodes.indexOf(currentNode);
-            adjacentNodes.remove(index);
-          }
+    	   if(adjacentNodes.contains(nextNode))
+           {
+             queue.add(nextNode);
+             index = adjacentNodes.indexOf(currentNode);
+             adjacentNodes.remove(index);
+           }
        }
        
      }
