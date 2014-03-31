@@ -30,6 +30,19 @@ public class Cluster {
 	public void setNodes(ArrayList<Position> nodes) {
 		this.nodes = nodes;
 	}
+	
+	/**
+	 * Returns true if cluster is a loop and false otherwise
+	 * @param board
+	 * @return
+	 */
+	public boolean testLoop(Board board)
+	{
+		LoopChecker checker = new LoopChecker(board);
+		boolean loop = checker.isLoop(this);
+		
+		return loop;
+	}
 
 	public Boolean testTripod(Board board){
 		/* Returns true if cluster forms a tripod
