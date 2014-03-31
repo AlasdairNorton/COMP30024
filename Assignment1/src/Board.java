@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 
@@ -11,15 +12,18 @@ public class Board {
 	 * computation
 	 */
 	private int arraySize;
-
-
+	
 	/* Array containing all the positions on the board
 	 * First dimension is y (rows), second is x (position in row) */
 	private Position[][] nodes;
 	
+	/* Arraylist containing all clusters (continuous groups of same-coloured pieces) */
+	private ArrayList<Cluster> clusters;
+	
 	/* Creates a new blank board, given its size */
 	public Board (int size){
 		int i, j;
+		this.clusters = new ArrayList<Cluster>(0);
 		this.size = size;
 		this.arraySize = size+1;
 		nodes = new Position[2*arraySize-1][2*arraySize-1];
@@ -45,16 +49,21 @@ public class Board {
 	}
 	
 	/* Creates a new board defined by the standard input */
-	public Board (String[] args){
-		//Scanner sc = new Scanner(System.in);
-		int i, j, nextchar=1;
-		this.size = Integer.parseInt(args[0]);
+	public Board (){
+		
+		Scanner sc = new Scanner(System.in);
+		int i, j;
+		
+		if(sc.hasNextInt()){
+			this.size = sc.nextInt();
+		} else {
+			System.out.println("Invalid input: No size given");
+			System.exit(1);
+		}	
+		
 		this.arraySize = size+1;
 		nodes = new Position[2*arraySize-1][2*arraySize-1];
-		/* Length of each row = 2*size-1 - |size-(row+1)|
-		 * assuming rows start at 0.
-		 * Initialise board by filling it with blank tiles
-		 */
+
 		for(i=0;i<2*arraySize-1;i++){
 			for(j=Math.max(0, i-arraySize+1); j< Math.min(arraySize+i, 2*arraySize-1) ;j++){
 				if(i==0 || i== 2*arraySize-2
@@ -63,11 +72,80 @@ public class Board {
 					/* If first row, last row, first column, last column */
 					nodes[i][j] = new Position(i,j,'O');
 				}else{
-					nodes[i][j] = new Position(i,j,args[nextchar].charAt(0));
-					nextchar++;
+					if(sc.hasNext()){
+						nodes[i][j] = new Position(i,j,sc.next().charAt(0));
+					} else {
+						System.out.println("Input Error: Syntax Error");
+						System.exit(1);
+					}
 				}
 				
 			}
+		}
+	}
+	
+	public ArrayList<Cluster> getClusters() {
+		return clusters;
+	}
+
+	public void setClusters(ArrayList<Cluster> clusters) {
+		this.clusters = clusters;
+	}
+
+	/* Takes the board state, determines individual groups of pieces */
+	public void makeClusters(){
+		int i, j;
+		Position node;
+		for(i=0;i<2*arraySize-1;i++){
+			for(j=Math.max(0, i-arraySize+1);j< Math.min(arraySize+i, 2*arraySize-1);j++){
+				node = nodes[i][j];
+				if(node.getParentCluster() == null
+						&& node.getColour()!='-' && node.getColour()!='O'){
+					// Node is not in a cluster and is not empty
+					fillCluster(node);
+				}
+			}
+		}
+	}
+	
+	/* Given a piece, finds all connected pieces of the same colour,
+	 * creates a cluster object containing them
+	 * 
+	 * Method: Initially adds the node it is passed to the cluster.
+	 * Populates the toAdd list with all the adjacent nodes.
+	 * The first adjacent node is popped off, if it is the right colour,
+	 * and not already in a cluster, it is added to the cluster, and all its
+	 * adjacent nodes are added to the list.
+	 * Repeat until list is empty.
+	 */
+	public void fillCluster(Position node){
+		Cluster newCluster = new Cluster(node.getColour());
+		ArrayList<Position> toAdd = new ArrayList<Position>(0);
+		Position tempNode;
+		
+		newCluster.addNode(node);
+		node.setParentCluster(newCluster);
+		toAdd.addAll(node.getAdjacents(this));
+		
+		while(!toAdd.isEmpty()){
+			tempNode = toAdd.remove(0);
+			if(tempNode.getParentCluster()==null &&
+					tempNode.getColour()==node.getColour()){
+				newCluster.addNode(tempNode);
+				tempNode.setParentCluster(newCluster);
+				toAdd.addAll(tempNode.getAdjacents(this));
+			}
+		}
+		clusters.add(newCluster);
+	}
+	
+	public void printClusters(){
+		for(Cluster cluster:clusters){
+			System.out.print(cluster.getColour()+" cluster, positions:");
+			for(Position node:cluster.getNodes()){
+				System.out.print("("+node.getY()+","+node.getX()+")");
+			}
+			System.out.print("\n");
 		}
 	}
 	

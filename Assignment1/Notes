@@ -1,18 +1,13 @@
 
-1. Input currently comes from the wrong source. Program currently takes
-input directly from the command line as arguments, instead of from System.in.
-This is simply because it is impractical to pipe data to System.in
-using eclipse, and it's way faster using eclipse to test than cmd.
-It's a very straightforward change to make.
+1. Input source fixed up.
 
 2. I've used ArrayLists in several places (storing clusters in Controller,
 storing positions in Cluster, finding adjacents in Position). I'm not sure
 they're the most efficient data structure to use, but again, switching them
 out shouldn't be too hard.
 
-3. No error management on input- need to guard against badly formed inputs
-(first character is not a number, does not contain enough positions,
-contains characters other than 'B', 'W' and '-')
+3. Input is guarded against not providing a size and not providing enough 
+positions. Not guarding against illegal character inputs though.
 
 4. Input I'm using:
 5
