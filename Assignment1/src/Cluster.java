@@ -48,7 +48,7 @@ public class Cluster {
 		/* Returns true if cluster forms a tripod
 		 	Currently prints out the colour of the cluster and
 		 	the number of edges it connects */
-		int size = board.getArraySize();
+		int size = board.getSize();
 		int[] edges = {0,0,0,0,0,0};
 		int tripodSum = 0;
 		
@@ -59,37 +59,37 @@ public class Cluster {
 		 * the top (e.g., [0,1] is on edge 0, and [1,0] is on edge 5)
 		 */
 		for(Position node: nodes){
-			if(node.getY() == 0 && node.getX()!=0 && node.getX()!=size-1){
+			if(node.getY() == 1 && node.getX()!=1 && node.getX()!=size){
 				// If node is on top edge, and not a corner, set edges[0] to 1
 				edges[0] = 1;
 			}
-			if(node.getY() > 0 && node.getY() < size-1 &&
-					node.getX()==2*size-1-Math.abs(size-(node.getY()+1))){
+			if(node.getY() > 1 && node.getY() < size &&
+					node.getX()==size+node.getY()-1){
 				/* If node is on upper right edge,
 				   and not a corner, set edges[1] to 1 */
 				edges[1] = 1;
 			}
-			if(node.getY() > size-1 && node.getY() < 2*size-2 &&
-					node.getX()==2*size-2){
+			if(node.getY() > size && node.getY() < 2*size-1 &&
+					node.getX()==2*size-1){
 				/* If node is on lower right edge,
 				   and not a corner, set edges[2] to 1 */
 				edges[2] = 1;
 			}
-			if(node.getY() == 2*size-2 && node.getX()!=size-1
-					&& node.getX()!=2*size-2){
+			if(node.getY() == 2*size-1 && node.getX()!=size
+					&& node.getX()!=2*size-1){
 				/* If node is on bottom edge, and not a corner, 
 				 * set edges[3] to 1
 				 */
 				edges[3] = 1;
 			}
-			if(node.getY()>size-1 && node.getY()<2*size-2 &&
-					node.getX()==node.getY()-size){
+			if(node.getY()>size && node.getY()<2*size-1 &&
+					node.getX()==node.getY()-size+1){
 				/* If node is on lower left edge, and not a corner, 
 				 * set edges[4] to 1
 				 */
 				edges[4] = 1;
 			}
-			if(node.getY()>0 && node.getY()<size-1 && node.getX()==0){
+			if(node.getY()>1 && node.getY()<size && node.getX()==1){
 				/* If node is on upper left edge, and not a corner,
 				 *  set edges[5] to 1
 				 */
@@ -100,8 +100,6 @@ public class Cluster {
 		for(int i=0;i<6;i++){
 			tripodSum+=edges[i];
 		}
-		System.out.println(colour+":"+tripodSum);
-		
 		return tripodSum>=3;
 	}
 }

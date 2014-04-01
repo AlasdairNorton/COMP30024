@@ -58,8 +58,7 @@ public class LoopChecker
   public boolean isOneComponent(ArrayList<Position> adjacentNodes)
   {
      Position currentNode = adjacentNodes.get(0);
-     int index = adjacentNodes.indexOf(currentNode);
-     adjacentNodes.remove(index);
+     adjacentNodes.remove(currentNode);
      Queue<Position> queue=new LinkedList<Position>();
      queue.add(currentNode);
      
@@ -76,13 +75,12 @@ public class LoopChecker
     	   if(adjacentNodes.contains(nextNode))
            {
              queue.add(nextNode);
-             index = adjacentNodes.indexOf(currentNode);
-             adjacentNodes.remove(index);
+             adjacentNodes.remove(nextNode);
            }
        }
        
      }
-     
+     adjacentNodes.trimToSize();
      //All reachable nodes have been explored. If the list of adjacent nodes is not empty then some nodes
      //were not reachable and there is more than one component
      if(adjacentNodes.size() == 0)

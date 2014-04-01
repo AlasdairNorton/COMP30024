@@ -11,6 +11,7 @@ public class Board {
 	 * computation
 	 */
 	private int arraySize;
+	private LoopChecker loopcheck;
 	
 	/* Array containing all the positions on the board
 	 * First dimension is y (rows), second is x (position in row) */
@@ -19,37 +20,11 @@ public class Board {
 	/* Arraylist containing all clusters (continuous groups of same-coloured pieces) */
 	private ArrayList<Cluster> clusters;
 	
-	/* Creates a new blank board, given its size */
-	public Board (int size){
-		int i, j;
-		this.clusters = new ArrayList<Cluster>(0);
-		this.size = size;
-		this.arraySize = size+1;
-		nodes = new Position[2*arraySize-1][2*arraySize-1];
-		/* Rows start at 0, until the 'size'th row,
-		 * at which point the first index begins increasing by 1 per row.
-		 * j(init) = Math.max(0, i-size+1)
-		 * Last index of a row starts at (size-1) and increases until (2*size-2)
-		 * j < Math.min(size+i, 2*size-1)
-		 * Initialise board by filling it with blank tiles
-		 */
-		for(i=0;i<2*arraySize-1;i++){
-			for(j=Math.max(0, i-arraySize+1); j< Math.min(arraySize+i, 2*arraySize-1) ;j++){
-				if(i==0 || i== 2*arraySize-2
-						|| j==Math.max(0, i-arraySize+1)
-						|| j==Math.min(arraySize+i, 2*arraySize-1)-1){
-					/* If first row, last row, first column, last column */
-					nodes[i][j] = new Position(i,j,'O');
-				}else{
-					nodes[i][j] = new Position(i,j,'-');
-				}
-			}
-		}
-	}
-	
 	/* Creates a new board defined by the standard input */
 	public Board (){
 		
+		clusters = new ArrayList<Cluster>();
+		setLoopcheck(new LoopChecker(this));		
 		Scanner sc = new Scanner(System.in);
 		int i, j;
 		
@@ -185,5 +160,13 @@ public class Board {
 			}
 			System.out.print("\n");
 		}
+	}
+
+	public LoopChecker getLoopcheck() {
+		return loopcheck;
+	}
+
+	public void setLoopcheck(LoopChecker loopcheck) {
+		this.loopcheck = loopcheck;
 	}
 }

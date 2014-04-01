@@ -56,7 +56,7 @@ public class Position {
 		/* Length of a row is given by
 		 * Math.min(size+y, 2*size-1)
 		 */
-		if(this.x<Math.min(board.getArraySize()+this.y, 2*board.getArraySize()-1)){
+		if(this.x<Math.min(board.getArraySize()+this.y, 2*board.getArraySize()-2)){
 			adjacents.add(board.getNodes()[this.y][this.x+1]);
 		}
 		/* Next, find the adjacent positions in the rows above and below
