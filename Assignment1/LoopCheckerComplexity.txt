@@ -1,0 +1,36 @@
+isLoop(cluster) //Assuming cluster means "collection of connected nodes of the same colour that may constitute a loop or tripod"
+{
+    Make empty list called adjacentNodeList
+
+    for node in cluster
+        for each node1 of node's 6 neighbours
+            if node1 not in the cluster and not in adjacentNodeList
+                add node1 to adjacentNodeList //Gets nodes adjacent to cluster (inside and out if it's a loop)
+
+    
+    if isOneComponent(adjacentNodeList)
+        return false
+    else return true //If the adjacent nodes make 2 components then the coloured cluster separates them and is a loop
+
+}
+
+
+isOneComponent(adjacentNodeList)
+{
+    Pick a start node and name it currentNode
+    Add currentNode to queue
+    Remove currentNode from adjacentNodeList
+
+    while queue is not empty
+        currentNode = queue.pop()
+
+        for node in neighbours of currentNode
+            if node is in adjacentNodeList
+                Add node to queue
+                Remove node from adjacentNodeList
+
+    
+    if adjacentNodeList is empty
+        return true //All nodes were reachable from start node, so it was one component
+    else return false
+}
