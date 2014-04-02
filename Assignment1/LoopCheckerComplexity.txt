@@ -1,36 +1,43 @@
+//Using simple addition and multiplication of the complexities of each line and loop, we see that 
+//O(k)*O(6)*O(2) + O(j_l) + O(1) = O(12k + j + l + 1). However, in most cases the number of nodes 
+//in the cluster, k, will be greater than or approximately equal to the number of nodes surrounding 
+//the cluster, j, or the edges between them l. Thus the complexity simplifies to O(12k + k + k) which 
+//then simplifies to O(k)
 isLoop(cluster) //Assuming cluster means "collection of connected nodes of the same colour that may constitute a loop or tripod"
 {
-    Make empty list called adjacentNodeList
+    Make empty list called adjacentNodeList O(1)
 
-    for node in cluster
-        for each node1 of node's 6 neighbours
-            if node1 not in the cluster and not in adjacentNodeList
-                add node1 to adjacentNodeList //Gets nodes adjacent to cluster (inside and out if it's a loop)
+    for node in cluster O(k) //k is the number of nodes in the cluster
+        for each node1 of node's 6 neighbours O(6)
+            if node1 not in the cluster and not in adjacentNodeList O(2)
+                add node1 to adjacentNodeList //Gets nodes adjacent to cluster (inside and out if it's a loop) O(1)
 
     
-    if isOneComponent(adjacentNodeList)
+    if isOneComponent(adjacentNodeList) O(j+l)
         return false
     else return true //If the adjacent nodes make 2 components then the coloured cluster separates them and is a loop
 
 }
 
 
+//Essentially this function is a Breadth First Search. The search will visit each node once and each edge once 
+//so it will have an overall complexityof O(j+l) with j being the number of nodes and l being the number of edges
 isOneComponent(adjacentNodeList)
 {
-    Pick a start node and name it currentNode
-    Add currentNode to queue
-    Remove currentNode from adjacentNodeList
+    Pick a start node and name it currentNode O(1)
+    Add currentNode to queue O(1)
+    Remove currentNode from adjacentNodeList O(1)
 
-    while queue is not empty
-        currentNode = queue.pop()
+    while queue is not empty O(1)
+        currentNode = queue.pop() O(1)
 
-        for node in neighbours of currentNode
-            if node is in adjacentNodeList
-                Add node to queue
-                Remove node from adjacentNodeList
+        for node in neighbours of currentNode O(6)
+            if node is in adjacentNodeList O(j)
+                Add node to queue O(1)
+                Remove node from adjacentNodeList O(1)
 
     
-    if adjacentNodeList is empty
+    if adjacentNodeList is empty O(1)
         return true //All nodes were reachable from start node, so it was one component
     else return false
 }
